@@ -1,71 +1,87 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(new MyApp());
 }
-
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-  final title = 'Flutterサンプル';
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      home: MyHomePage(
-        title:this.title,
+    return new MaterialApp(
+      title: 'Generated App',
+      theme: new ThemeData(
+        primarySwatch: Colors.blue,
+        primaryColor: const Color(0xFF2196f3),
+        accentColor: const Color(0xFF2196f3),
+        canvasColor: const Color(0xFFfafafa),
       ),
+      home: new MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({required this.title}): super();
-  final String title;
-
+  MyHomePage({Key ? key}) : super(key: key);
   @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class Data {
-  final int _price;
-  final String _name;
-  Data(this._price, this._name);
-
-  String show(){
-    return "$_nameは$_price円です";
-  }
+  _MyHomePageState createState() => new _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static final _data = [
-    Data(100, 'りんご'),
-    Data(150, 'バナナ'),
-    Data(120, 'オレンジ'),
-  ];
-  Data _item = _data[0];
-
-  void _setMessage() {
-    setState(() {
-      _item = (_data..shuffle()).first;
-    });
-  }
+  static var _message = 'ok.';
+  static final _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('App Name'),
       ),
-      body: Text(
-        _item.show(),
-        style: TextStyle(fontSize: 32.0),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _setMessage,
-        tooltip: 'set message.',
-        child: Icon(Icons.star),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Text(
+                _message,
+                style: TextStyle(
+                    fontSize: 32.0,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: "Roboto"),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(10.0),
+              child: TextField(
+                controller: _controller,
+                style: TextStyle(
+                    fontSize: 28.0,
+                    color: const Color(0xffFF0000),
+                    fontWeight: FontWeight.w400,
+                    fontFamily: "Roboto"),
+              ),
+            ),
+            ElevatedButton(
+                child: Text(
+                  "Push me!",
+                  style: TextStyle(
+                      fontSize: 32.0,
+                      color: const Color(0xff000000),
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Roboto"),
+                ),
+                onPressed: buttonPressed),
+          ],
+        ),
       ),
     );
+  }
+
+  void buttonPressed() {
+    setState(() {
+      _message = '入力内容: ${_controller.text}';
+    });
   }
 }
