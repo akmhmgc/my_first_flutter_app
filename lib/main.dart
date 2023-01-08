@@ -27,12 +27,27 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+class Data {
+  final int _price;
+  final String _name;
+  Data(this._price, this._name);
+
+  String show(){
+    return "$_nameは$_price円です";
+  }
+}
+
 class _MyHomePageState extends State<MyHomePage> {
-  String _message = 'Hello!';
+  static final _data = [
+    Data(100, 'りんご'),
+    Data(150, 'バナナ'),
+    Data(120, 'オレンジ'),
+  ];
+  Data _item = _data[0];
 
   void _setMessage() {
     setState(() {
-      _message = 'タップしました！';
+      _item = (_data..shuffle()).first;
     });
   }
 
@@ -43,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Text(
-        _message,
+        _item.show(),
         style: TextStyle(fontSize: 32.0),
       ),
       floatingActionButton: FloatingActionButton(
