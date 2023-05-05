@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
       print("call setState");
       _counter++;
     });
-    nextpage();
+    // nextpage();
   }
 
   void nextpage() async {
@@ -66,6 +66,12 @@ class _MyHomePageState extends State<MyHomePage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     print("call didChangeDependencies");
+  }
+
+  @override
+  void didUpdateWidget(MyHomePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    print("call didUpdateWidget");
   }
 
   @override
