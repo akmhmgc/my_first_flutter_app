@@ -1,8 +1,5 @@
-// Copyright (c) 2019, the Dart project authors.  Please see the AUTHORS file
-// for details. All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
 import 'package:flutter/material.dart';
+import 'stateful_tile.dart';
 
 void main() => runApp(MyApp());
 
@@ -35,11 +32,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  late List<Widget> tiles;
+  @override
+  void initState() {
+    super.initState();
+    // 2つのStatefulWidgetが準備
+    tiles = [
+      StatefulTile(key: UniqueKey()),
+      StatefulTile(key: UniqueKey()),
+    ];
+  }
 
-  void _incrementCounter() {
+  // 入れ替え処理
+  void changeTiles() {
     setState(() {
-      _counter++;
+      tiles.insert(1, tiles.removeAt(0));
     });
   }
 
@@ -49,22 +56,9 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
+      body: Row(children: tiles),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: changeTiles,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
