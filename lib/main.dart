@@ -3,6 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'business_logic.dart';
 
 void main() => runApp(MyApp());
 
@@ -35,12 +37,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  var intStream = StreamController<int>();
+  var stringStream = StreamController<String>.broadcast();
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  // 初期化時にConsumerのコンストラクタにStreamを渡す
+  @override
+  void initState() {
+    super.initState();
+    Generator(intStream);
+    Coordinator(intStream, stringStream);
+    Consumer(stringStream);
+  }
+
+  // 終了時にStreamを解放する
+  @override
+  void dispose() {
+    super.dispose();
+    intStream.close();
+    stringStream.close();
   }
 
   @override
@@ -56,17 +70,18 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            StreamBuilder<String>(
+              stream: stringStream.stream,
+              initialData: "",
+              builder: (context, snapshot) {
+                return Text(
+                  '${snapshot.data}',
+                  style: Theme.of(context).textTheme.headline4,
+                );
+              },
+            )
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
